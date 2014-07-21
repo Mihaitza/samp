@@ -5,7 +5,7 @@ new bool:PlayerAFK[MAX_PLAYERS]; // Seteaza variabila [0-NOT-AFK | 1-AFK] | Set 
 new AFKDetect[MAX_PLAYERS]; // Seteaza timpul curent din OPU | Set current date/time to player from OnPlayerUpdate(OPU)
 new bool: FunctionCall[2][MAX_PLAYERS]; // Ajuta sa nu se repete functiile OnPlayerPause si/sau OnPlayerUnpause | Helps not to repeat OnPlayerPause or/and OnPlayerUnpause
 new playerAName[50]; //Player name
-new AFKTime[MAX_PLAYERS]; //Player name
+new AFKTime[MAX_PLAYERS];
  
 #include <a_samp>
 #include <foreach>
