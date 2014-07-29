@@ -116,6 +116,7 @@ public TCheckSpeed(playerid)
 					GetPlayerName(playerid, playerAName,sizeof(playerAName));
 					format(szString,sizeof(szString),"[BBG][Global]: {FFFFFF}Player %s has been kicked. Reason: Speed Hack",playerAName);
 					SendClientMessageToAll(0xF00C17FF,szString);
+					//action
 				}
 			}
 			SpeedM[1][playerid] = SpeedM[0][playerid];
