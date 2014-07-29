@@ -4,7 +4,7 @@
 new bool:PlayerAFK[MAX_PLAYERS]; // Seteaza variabila [0-NOT-AFK | 1-AFK] | Set player variable [0-NOT-AFK | 1-AFK]
 new AFKDetect[MAX_PLAYERS]; // Seteaza timpul curent din OPU | Set current date/time to player from OnPlayerUpdate(OPU)
 new bool: FunctionCall[2][MAX_PLAYERS]; // Ajuta sa nu se repete functiile OnPlayerPause si/sau OnPlayerUnpause | Helps not to repeat OnPlayerPause or/and OnPlayerUnpause
-new playerAName[50]; //Player name
+new playerAName[MAX_PLAYER_NAME]; //Player name
 new AFKTime[MAX_PLAYERS];
  
 #include <a_samp>
@@ -40,7 +40,7 @@ public OnPlayerUpdate(playerid)
 #endif
 #define OnPlayerUpdate VFUNC_OnPlayerUpdate
 
-public OnPlayerDisconnect(playerid)
+public OnPlayerDisconnect(playerid, reason)
 {
 	if(PlayerAFK[playerid] == true && FunctionCall[1][playerid] == false)
 	{
@@ -52,14 +52,14 @@ public OnPlayerDisconnect(playerid)
 		AFKTime[playerid] = 0;
 		CallLocalFunction("OnPlayerUnpause", "i", playerid);
 	}
-    #if defined VFUNC_OnPlayerUpdate
-        return VFUNC_OnPlayerUpdate(playerid);
+    #if defined VFUNC_OnPlayerDisconnect
+        return VFUNC_OnPlayerDisconnect(playerid, reason);
     #else
         return 1;
     #endif
 }
 #if defined VFUNC_OnPlayerDisconnect
-    forward VFUNC_OnPlayerDisconnect(playerid);
+    forward VFUNC_OnPlayerDisconnect(playerid, reason);
 #endif
 #if defined _ALS_OnPlayerDisconnect
     #undef OnPlayerDisconnect
