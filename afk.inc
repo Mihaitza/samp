@@ -4,14 +4,14 @@
 new bool:PlayerAFK[MAX_PLAYERS]; // Seteaza variabila [0-NOT-AFK | 1-AFK] | Set player variable [0-NOT-AFK | 1-AFK]
 new AFKDetect[MAX_PLAYERS]; // Seteaza timpul curent din OPU | Set current date/time to player from OnPlayerUpdate(OPU)
 new bool: FunctionCall[2][MAX_PLAYERS]; // Ajuta sa nu se repete functiile OnPlayerPause si/sau OnPlayerUnpause | Helps not to repeat OnPlayerPause or/and OnPlayerUnpause
-new playerAName[MAX_PLAYER_NAME]; //Player name
+new playerAName[50]; //Player name
 new AFKTime[MAX_PLAYERS];
  
 #include <a_samp>
 #include <foreach>
-
+ 
 #if defined _AFKDETECT_INC
-	#endinput
+        #endinput
 #endif
 #define _AFKDETECT_INC
  
@@ -39,19 +39,19 @@ public OnPlayerUpdate(playerid)
     #define _ALS_OnPlayerUpdate
 #endif
 #define OnPlayerUpdate VFUNC_OnPlayerUpdate
-
+ 
 public OnPlayerDisconnect(playerid, reason)
 {
-	if(PlayerAFK[playerid] == true && FunctionCall[1][playerid] == false)
-	{
-		GetPlayerName(playerid, playerAName,sizeof(playerAName)),
-		PlayerAFK[playerid] = false;
-		printf("[resume] %s is no longer AFK because he's left the game. (%d seconds)",playerAName,gettime()-AFKTime[playerid]);
-		FunctionCall[1][playerid] = true;
-		FunctionCall[0][playerid] = false;
-		AFKTime[playerid] = 0;
-		CallLocalFunction("OnPlayerUnpause", "i", playerid);
-	}
+        if(PlayerAFK[playerid] == true && FunctionCall[1][playerid] == false)
+        {
+                GetPlayerName(playerid, playerAName,sizeof(playerAName)),
+                PlayerAFK[playerid] = false;
+                printf("[resume] %s is no longer AFK because he's left the game. (%d seconds)",playerAName,gettime()-AFKTime[playerid]);
+                FunctionCall[1][playerid] = true;
+                FunctionCall[0][playerid] = false;
+                AFKTime[playerid] = 0;
+                CallLocalFunction("OnPlayerUnpause", "i", playerid);
+        }
     #if defined VFUNC_OnPlayerDisconnect
         return VFUNC_OnPlayerDisconnect(playerid, reason);
     #else
@@ -67,7 +67,7 @@ public OnPlayerDisconnect(playerid, reason)
     #define _ALS_OnPlayerDisconnect
 #endif
 #define OnPlayerDisconnect VFUNC_OnPlayerDisconnect
-
+ 
 public OnGameModeInit()
 {
         SetTimer("AFKChecker",1000,true);
@@ -90,36 +90,36 @@ public AFKChecker()
 {
         foreach(Player, i)
         {
-			if(gettime()-AFKDetect[i] > 5)
-			{
-				if(PlayerAFK[i] == false && FunctionCall[0][i] == false)
-					GetPlayerName(i, playerAName,sizeof(playerAName)),
-						PlayerAFK[i] = true,
-							CallLocalFunction("OnPlayerPause", "i", i),
-								printf("[pause] %s is now AFK.",playerAName),
-									FunctionCall[0][i] = true,
-										FunctionCall[1][i] = false,
-											AFKTime[i] = gettime();
-			}
-			else
-			{
-				if(PlayerAFK[i] == true && FunctionCall[1][i] == false)
-					GetPlayerName(i, playerAName,sizeof(playerAName)),
-						PlayerAFK[i] = false,
-							CallLocalFunction("OnPlayerUnpause", "i", i),
-								printf("[resume] %s is no longer AFK. (%d seconds)",playerAName,gettime()-AFKTime[i]),
-									FunctionCall[1][i] = true,
-										FunctionCall[0][i] = false,
-											AFKTime[i] = gettime()-AFKTime[i];
-			}
+                        if(gettime()-AFKDetect[i] > 5)
+                        {
+                                if(PlayerAFK[i] == false && FunctionCall[0][i] == false)
+                                        GetPlayerName(i, playerAName,sizeof(playerAName)),
+                                                PlayerAFK[i] = true,
+                                                        CallLocalFunction("OnPlayerPause", "i", i),
+                                                                printf("[pause] %s is now AFK.",playerAName),
+                                                                        FunctionCall[0][i] = true,
+                                                                                FunctionCall[1][i] = false,
+                                                                                        AFKTime[i] = gettime();
+                        }
+                        else
+                        {
+                                if(PlayerAFK[i] == true && FunctionCall[1][i] == false)
+                                        GetPlayerName(i, playerAName,sizeof(playerAName)),
+                                                PlayerAFK[i] = false,
+                                                        CallLocalFunction("OnPlayerUnpause", "i", i),
+                                                                printf("[resume] %s is no longer AFK. (%d seconds)",playerAName,gettime()-AFKTime[i]),
+                                                                        FunctionCall[1][i] = true,
+                                                                                FunctionCall[0][i] = false,
+                                                                                        AFKTime[i] = gettime()-AFKTime[i];
+                        }
         }
         return 1;
 }
 public IsPlayerPause(playerid)
-	if(PlayerAFK[playerid] == true) return 1;
-		else return 0;
-
+        if(PlayerAFK[playerid] == true) return 1;
+                else return 0;
+ 
 public TimeSincePaused(playerid) {
-	if(PlayerAFK[playerid] == true) return gettime()-AFKTime[playerid];
-	else return AFKTime[playerid];
+        if(PlayerAFK[playerid] == true) return gettime()-AFKTime[playerid];
+        else return AFKTime[playerid];
 }
