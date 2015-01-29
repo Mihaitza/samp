@@ -1,4 +1,4 @@
-//AFK Auto-Detect v1.0
+//AFK Auto-Detect v2.0
 //Credits to: Miihai (Mihaitza. - BBGaming.ro)
  
 new bool:PlayerAFK[MAX_PLAYERS]; // Seteaza variabila [0-NOT-AFK | 1-AFK] | Set player variable [0-NOT-AFK | 1-AFK]
